@@ -1,0 +1,80 @@
+/* Umumiy */
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+
+body {
+  background: #f9fafb;
+  color: #111827;
+}
+
+/* Header */
+.header {
+  background: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 15px 20px;
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.logo {
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 20px;
+  color: #1E40AF;
+}
+.nav a {
+  margin: 0 10px;
+  text-decoration: none;
+  color: #374151;
+  font-weight: 500;
+}
+.nav a.active,
+.nav a:hover {
+  color: #1E40AF;
+}
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.search-input {
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+}
+.btn-outline {
+  background: transparent;
+  border: 1px solid #1E40AF;
+  color: #1E40AF;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.btn-outline:hover {
+  background: #1E40AF;
+  color: white;
+}
+
+/* Hero */
+.hero {
+  background: linear-gradient(180deg, #1E40AF0f, #fff);
+  padding: 60px 0;
+}
+.hero-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.hero-text h1 {
+  font-size: 36px;
+}

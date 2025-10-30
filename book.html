@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Kitob haqida — Online Library</title>
+<link rel="stylesheet" href="main.css" />
+</head>
+<body>
+<header class="site-header">
+    <div class="container header-row">
+        <a href="index.html" class="brand">📚 OnlineLibrary</a>
+        <nav class="header-actions">
+            <button id="themeToggle" class="icon-btn" aria-pressed="false" title="Dark / Light">🌙</button>
+            <div id="authSection">
+                <a href="pages/login.html" class="btn btn-outline">Kirish</a>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<main class="container book-detail">
+    <div id="bookDetail">
+        <!-- Kitob ma'lumotlari JavaScript orqali yuklanadi -->
+    </div>
+</main>
+
+<script>
+// Theme toggle
+const themeToggle = document.getElementById('themeToggle');
+const root = document.documentElement;
+const savedTheme = localStorage.getItem('ol_theme');
+
+if (savedTheme === 'dark') {
+    root.classList.add('ol-dark');
+    themeToggle && (themeToggle.textContent = '☀️');
+}
+
+themeToggle?.addEventListener('click', () => {
+    const isDark = root.classList.toggle('ol-dark');
+    themeToggle.textContent = isDark ? '☀️' : '🌙';
+    localStorage.setItem('ol_theme', isDark ? 'dark' : 'light');
+});
+
+// Kitob ma'lumotlarini yuklash
+document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const bookId = urlParams.get('id');
+    
+    if (bookId) {
+        loadBookDetail(bookId);
+    } else {
+        document.getElementById('bookDetail').innerHTML = `
+            <div class="empty-state">
+                <h2>Kitob topilmadi</h2>
+                <p>Iltimos, kitobni qayta tanlang</p>
+                <a href="books.html" class="btn btn-primary">Barcha Kitoblar</a>
+            </div>
+        `;
+    }
+});
+
+function loadBookDetail(bookId) {
+    // Kitoblar ma'lumotlari (books.js dagi bilan bir xil)
+    const books = [
+        {
+            id: 'b1',
+            title: 'O\'tkan Kunlar',
+            author: 'Abdulla Qodiriy',
+            category: 'fiction',
+            cover: 'images/sample-cover-1.jpg',
+            pages: 320,
+            year: 1936,
+            rating: 4.8,
+            description: 'XX asr boshlaridagi O\'zbekiston hayotini aks ettirgan mumtoz asar. Roman O\'zbek adabiyotining durdona asarlaridan biri bo\'lib, unda davrning ijtimoiy, madaniy va siyosiy hayoti chuqur tasvirlangan.',
+            content: `
+                <h3>1-bob</h3>
+                <p>Qadimgi shahar ko'chalari orasida hayot o'z oqimida davom etar edi...</p>
+                
+                <h3>2-bob</h3>
+                <p>Yosh yuraklarning sevgisi va orzulari ularni yangi izlanishlarga olib borardi...</p>
+                
+                <h3>3-bob</h3>
+                <p>Hayotning og'irliklari va quvonchlari bir-biriga almashinib turar edi...</p>
+            `
+        },
+        // ... boshqa kitoblar (yuqoridagi kabi)
+    ];
+    
+    const book = books.find(b => b.id === bookId);
+    
+    if (book) {
+        const isFavorite = JSON.parse(localStorage.getItem('favorites') || '[]').includes(bookId);
+        
+        document.getElementById('bookDetail').innerHTML = `
+            <div class="book-detail-container">
+                <div class="book-detail-header">
+                    <div class="book-cover-large">
+                        <img src="${book.cover}" alt="${book.title}" />
+                    </div>
+                    <div class="book-info">
+                        <h1>${book.title}</h1>
+                        <p class="book-author">${book.author}</p>
+                        <div class="book-rating-large">
+                            ${generateStarRating(book.rating)}
+                            <span class="rating-text">${book.rating}/5</span>
+                        </div>
+                        <div class="book-meta-large">
+                            <span><strong>Betlar:</strong> ${book.pages}</span>
+                            <span><strong>Yil:</strong> ${book.year}</span>
+                            <span><strong>Janr:</strong> ${getCategoryName(book.category)}</span>
+                        </div>
+                        <p class="book-description">${book.description}</p>
+                        <div class="book-actions-large">
+                            <button class="btn btn-primary" onclick="startReading('${book.id}')">O'qishni Boshlash</button>
+                            <button class="icon-btn favorite-btn-large ${isFavorite ? 'favorited' : ''}" 
+                                    onclick="toggleFavorite('${book.id}')"
+                                    title="${isFavorite ? 'Sevimlilardan olib tashlash' : 'Sevimlilarga qo\'shish'}">
+                                ${isFavorite ? '❤️' : '🤍'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="book-content">
+                    <h2>Kitob Mazmuni</h2>
+                    <div class="content-preview">
+                        ${book.content || '<p>Kitob mazmuni tez orada qo\'shiladi...</p>'}
+                    </div>
+                </div>
+            </div>
+        `;
+    } else {
+        document.getElementById('bookDetail').innerHTML = `
+            <div class="empty-state">
+                <h2>Kitob topilmadi</h2>
+                <p>Iltimos, kitobni qayta tanlang</p>
+                <a href="books.html" class="btn btn-primary">Barcha Kitoblar</a>
+            </div>
+        `;
+    }
+}
+
+function generateStarRating(rating) {
+    const fullStars = Math.floor(rating);
+    const halfStar = rating % 1 >= 0.5;
+    const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+    
+    let stars = '';
+    for (let i = 0; i < fullStars; i++) stars += '⭐';
+    if (halfStar) stars += '✨';
+    for (let i = 0; i < emptyStars; i++) stars += '☆';
+    
+    return stars;
+}
+
+function getCategoryName(category) {
+    const categories = {
+        'fiction': 'Badiiy',
+        'science': 'Ilmiy',
+        'religion': 'Diniy',
+        'history': 'Tarix',
+        'psychology': 'Psixologiya',
+        'children': 'Bolalar'
+    };
+    return categories[category] || category;
+}
+
+function startReading(bookId) {
+    // O'qishni boshlash
+    showMessage('O\'qish boshlandi!', 'success');
+    
+    // Reading list ga qo'shish
+    let reading = JSON.parse(localStorage.getItem('reading') || '[]');
+    if (!reading.includes(bookId)) {
+        reading.push(bookId);
+        localStorage.setItem('reading', JSON.stringify(reading));
+    }
+}
+
+function toggleFavorite(bookId) {
+    let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+    
+    if (favorites.includes(bookId)) {
+        favorites = favorites.filter(id => id !== bookId);
+        showMessage('Kitob sevimlilardan olib tashlandi', 'info');
+    } else {
+        favorites.push(bookId);
+        showMessage('Kitob sevimlilarga qo\'shildi', 'success');
+    }
+    
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+    loadBookDetail(bookId); // UI ni yangilash
+}
+
+function showMessage(message, type) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message-alert message-${type}`;
+    messageDiv.textContent = message;
+    messageDiv.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 12px 20px;
+        border-radius: 8px;
+        color: white;
+        font-weight: 500;
+        z-index: 1000;
+        animation: slideIn 0.3s ease;
+        background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
+    `;
+    
+    document.body.appendChild(messageDiv);
+    
+    setTimeout(() => {
+        messageDiv.remove();
+    }, 3000);
+}
+</script>
+
+<style>
+.book-detail-container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.book-detail-header {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.book-cover-large img {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.book-info h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+}
+
+.book-author {
+    font-size: 1.2rem;
+    color: var(--muted-text);
+    margin-bottom: 1rem;
+}
+
+.book-rating-large {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 1rem 0;
+    font-size: 1.2rem;
+}
+
+.book-meta-large {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background: var(--card-bg);
+    border-radius: 8px;
+}
+
+.book-description {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--text);
+    margin: 1.5rem 0;
+}
+
+.book-actions-large {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.favorite-btn-large {
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.favorite-btn-large:hover {
+    transform: scale(1.2);
+}
+
+.book-content {
+    margin-top: 3rem;
+}
+
+.book-content h2 {
+    margin-bottom: 1.5rem;
+    color: var(--text);
+}
+
+.content-preview {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 12px;
+    line-height: 1.8;
+}
+
+.content-preview h3 {
+    margin: 1.5rem 0 0.5rem 0;
+    color: var(--primary);
+}
+
+.content-preview p {
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+    .book-detail-header {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    
+    .book-info h1 {
+        font-size: 2rem;
+    }
+}
+</style>
+</body>
+</html>

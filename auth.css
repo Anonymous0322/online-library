@@ -1,0 +1,57 @@
+.auth-page{
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	min-height: calc(100vh - 140px);
+	padding: 40px 16px;
+	background: var(--bg);
+}
+
+.auth-card{
+	background: var(--card-bg);
+	padding: 28px;
+	border-radius: 14px;
+	box-shadow: var(--shadow-lg);
+	width: 420px;
+	max-width: 100%;
+	border: 1px solid var(--border);
+}
+
+.auth-card h2{
+	margin: 0 0 8px 0;
+	font-size: 1.5rem;
+	color: var(--text);
+}
+
+.auth-card p { color: var(--muted-text); margin-bottom: 12px }
+
+.auth-card label{ display:block; font-size:0.9rem; color:var(--muted-text); margin-top:10px }
+
+.auth-card input[type="email"], .auth-card input[type="password"], .auth-card input[type="text"]{
+	width:100%; padding:12px 14px; margin-top:6px; border-radius:10px; border:1px solid var(--border); background:var(--bg); color:var(--text); outline:none; transition:box-shadow .15s;
+}
+
+.auth-card input:focus{ box-shadow: 0 4px 12px rgba(37,99,235,0.08); border-color: var(--primary) }
+
+.auth-card .social-login{ margin-top:18px; text-align:center }
+.auth-card .social-buttons{ display:flex; gap:8px; justify-content:center }
+.social-btn{ padding:10px 12px; border-radius:8px; border:1px solid var(--border); background:var(--bg); cursor:pointer; display:inline-flex; align-items:center; justify-content:center }
+
+/* Google button styling */
+.social-btn.google{
+	gap:12px; padding:10px 18px; border-radius:12px; border:none; background:var(--bg); box-shadow:0 6px 18px rgba(2,6,23,0.06); cursor:pointer; transition:transform .18s ease, box-shadow .18s ease; min-width:260px; max-width:100%;
+}
+.social-btn.google:hover{ transform:translateY(-3px); box-shadow:0 12px 28px rgba(2,6,23,0.08); }
+.social-btn .social-icon{ display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;color:white;font-weight:700;font-size:16px; background: conic-gradient(#4285f4 0 25%, #34a853 25% 50%, #fbbc05 50% 75%, #ea4335 75% 100%); box-shadow:0 3px 8px rgba(2,6,23,0.08); }
+.social-btn.google .label{ font-weight:600; color:var(--text); text-align:center }
+
+/* loading spinner */
+.social-btn.loading{ position:relative; color:transparent !important }
+.social-btn.loading::after{ content:''; position:absolute; right:14px; width:18px; height:18px; border:3px solid rgba(255,255,255,0.3); border-top-color:#fff; border-radius:50%; animation:auth-spin .9s linear infinite }
+@keyframes auth-spin{ from{transform:rotate(0)} to{transform:rotate(360deg)} }
+
+.auth-card .btn { width:100%; display:inline-flex; justify-content:center }
+
+.auth-footer { margin-top:14px; text-align:center; font-size:0.9rem; color:var(--muted-text) }
+
+@media (max-width:520px){ .auth-card{ width: 100%; padding:18px } }

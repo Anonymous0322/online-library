@@ -1,0 +1,103 @@
+/* shared.css - small styles for header/footer, notification dropdown and chat badge */
+:root{--primary:#2563eb;--primary-hover:#1e40af;--bg:#f8fafc;--card-bg:#ffffff;--text:#111827;--muted-text:#6b7280;--border:#e6e9ef;--shadow:0 4px 12px rgba(16,24,40,0.04);--shadow-lg:0 12px 24px rgba(16,24,40,0.08);--success:#10b981;--warning:#f59e0b}
+
+/* Dark theme overrides */
+.ol-dark { --primary: #60a5fa; --primary-hover:#3b82f6; --bg:#0b1220; --card-bg:#0f1724; --text:#e6eef6; --muted-text:#94a3b8; --border:#132235; --shadow:0 6px 18px rgba(2,6,23,0.6); --shadow-lg:0 18px 32px rgba(2,6,23,0.65);} 
+
+.top-nav{background:transparent;padding:8px 0}
+.main-header{padding:18px 0;border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--text);text-decoration:none}
+.search-form{display:flex;align-items:center}
+.search-input{padding:10px 12px;border:1px solid var(--border);border-radius:999px;background:var(--bg);min-width:320px}
+.search-btn{background:var(--card-bg);border:none;color:var(--text);padding:8px 12px;border-radius:999px;cursor:pointer;transition:background .15s, color .15s}
+.search-form:focus-within .search-btn, .search-input:focus + .search-btn { background: var(--primary); color: white }
+.icon-btn{background:none;border:none;padding:8px;border-radius:8px;cursor:pointer}
+.notification-bell{position:relative}
+.bell-container{position:relative}
+.notification-badge{position:absolute;top:-6px;right:-6px;display:none;background:var(--primary);color:white;padding:2px 6px;border-radius:999px;font-size:11px}
+.notification-dropdown{position:absolute;right:0;top:36px;width:340px;background:var(--card-bg);border-radius:12px;box-shadow:var(--shadow-lg);display:none;z-index:1000;overflow:hidden;transition:max-height 0.3s ease-in-out}
+.notification-dropdown.show{display:block}
+.notification-dropdown.expanded .notification-list{max-height:480px}
+.notification-header{display:flex;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border)}
+.notification-list{max-height:320px;overflow:auto;transition:max-height 0.3s ease-in-out}
+.notification-item{display:flex;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);align-items:center}
+.notification-item.unread{background:linear-gradient(90deg, rgba(37,99,235,0.06), transparent)}
+.notification-footer{padding:12px;text-align:center;border-top:1px solid var(--border)}
+.view-all-btn{background:none;border:none;color:var(--text);padding:8px 16px;width:100%;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background 0.2s}
+.view-all-btn:hover{background:var(--bg)}
+.notification-dropdown.expanded{box-shadow:var(--shadow-lg), 0 8px 30px rgba(0,0,0,0.1)}
+.chat-icon{position:relative}
+.chat-badge{position:absolute;top:-6px;right:-6px;display:none;background:var(--success);color:white;padding:2px 6px;border-radius:999px;font-size:11px}
+
+/* small utils */
+.container{max-width:1100px;margin:0 auto;padding:0 16px}
+
+/* responsive tweaks */
+@media (max-width: 768px){.search-input{min-width:140px}.notification-dropdown{width:260px}}
+
+/* Notification preview modal */
+.notification-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.25);display:flex;align-items:center;justify-content:center;z-index:11000}
+.notification-modal{background:var(--card-bg);border-radius:12px;max-width:420px;width:90%;box-shadow:var(--shadow-lg);overflow:hidden}
+.notification-modal-header{display:flex;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border);align-items:center}
+.notification-modal-body{padding:16px;color:var(--text)}
+.notification-modal-footer{padding:12px 16px;border-top:1px solid var(--border);text-align:right}
+.notification-modal .close-modal{background:none;border:none;font-size:20px;cursor:pointer}
+
+/* Make auth and message pages match the main site look */
+.auth-page, .messages-page, .books-main, .profile-main {
+	background: var(--bg);
+	color: var(--text);
+}
+
+.auth-card, .messages-layout, .profile-main .profile-header, .books-main .book-card {
+	background: var(--card-bg);
+	color: var(--text);
+	border: 1px solid var(--border);
+	box-shadow: var(--shadow);
+}
+
+.btn-primary { background: linear-gradient(90deg, var(--primary), var(--primary-hover)); color: white; border: none; padding: 8px 12px; border-radius: 8px; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; }
+.btn-outline { border: 1px solid var(--border); background: transparent; color: var(--text); }
+
+.search-input, .message-input, .search-form input, .profile-settings-form input, .profile-settings-form textarea { background: var(--bg); color: var(--text); border: 1px solid var(--border); }
+
+/* small helper for badges to show in dark mode */
+.notification-badge, .chat-badge { box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+
+/* header avatar in authSection */
+.profile-avatar-btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none}
+.header-avatar{width:36px;height:36px;border-radius:999px;border:2px solid rgba(255,255,255,0.12);object-fit:cover;box-shadow:0 4px 12px rgba(2,6,23,0.4)}
+
+/* nudge the language selector slightly left to create space for avatar */
+.nav-right .language-selector{margin-right:6px}
+
+/* profile area: text button + avatar */
+.profile-area{display:flex;align-items:center;gap:10px}
+.profile-text-btn{padding:6px 10px;border-radius:8px}
+@media (max-width:600px){ .profile-area{gap:6px} .header-avatar{width:30px;height:30px} }
+
+/* Account dropdown (replaces language selector visually) */
+.account-menu{position:relative;display:inline-block;margin-right:6px}
+.account-btn{background:transparent;border:none;color:var(--text);display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:8px;cursor:pointer}
+.account-btn .account-label{display:inline-block;margin-left:4px}
+.account-avatar{width:34px;height:34px;border-radius:999px;object-fit:cover;border:2px solid rgba(255,255,255,0.08);box-shadow:0 4px 14px rgba(2,6,23,0.45)}
+.account-dropdown{position:absolute;right:0;top:calc(100% + 8px);background:var(--card-bg);border:1px solid var(--border);box-shadow:var(--shadow-lg);border-radius:8px;min-width:200px;display:none;z-index:12000;overflow:hidden}
+.account-dropdown.show{display:block}
+.account-item{display:block;width:100%;padding:10px 12px;text-align:left;border:none;background:transparent;color:var(--text);cursor:pointer}
+.account-item:hover{background:rgba(0,0,0,0.04)}
+.account-item.danger{color:#b91c1c;background:linear-gradient(180deg, rgba(185,28,28,0.04), transparent)}
+
+/* Slightly nudge the language label left (if still present) to make space for avatar/account) */
+.nav-right .language-selector{margin-right:10px}
+
+/* language selector chooser */
+#languageSelectorShared{position:relative;display:inline-block;margin-right:8px}
+#languageSelectorShared .lang-current{cursor:pointer;padding:6px 8px;border-radius:8px;background:transparent;color:var(--text)}
+#languageSelectorShared .lang-chooser{position:absolute;right:0;top:calc(100% + 8px);display:none;background:var(--card-bg);border:1px solid var(--border);box-shadow:var(--shadow-lg);border-radius:8px;overflow:hidden;min-width:140px;z-index:12000}
+#languageSelectorShared .lang-chooser.show{display:block}
+#languageSelectorShared .lang-item{display:block;padding:8px 10px;border:none;background:transparent;color:var(--text);width:100%;text-align:left;cursor:pointer}
+#languageSelectorShared .lang-item:hover{background:rgba(0,0,0,0.04)}
+
+/* allow account dropdown to be shown on homepage; JS will toggle .show */
+.account-dropdown{transition:all .12s ease}
+/* dropdown styles removed; header shows only avatar and Profil button */

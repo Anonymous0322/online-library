@@ -1,0 +1,902 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Online Kutubxona — Bepul Kitoblar</title>
+  <link rel="stylesheet" href="main.css">
+  <link rel="stylesheet" href="shared.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <div id="siteHeader"></div>
+
+  <main>
+    <!-- Featured Books Section -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: var(--bg);
+            color: white;
+            min-height: 100vh;
+            padding: 15px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 15px 0;
+            margin-bottom: 15px;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        /* ===== Reklama ===== */
+        .ad-container {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+            gap: 10px;
+        }
+        
+        .ad-banner {
+            flex: 1;
+            height: 60px;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+            font-weight: bold;
+            font-size: 0.9rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            padding: 0 8px;
+        }
+        
+        /* ===== Karusel Bölümü ===== */
+        .featured-books {
+            position: relative;
+            margin: 1rem auto;
+            width: 100%;
+            max-width: 1200px;
+            height: 470px;
+            text-align: center;
+            background-image: url(images/body/carusel-bg.jpg);
+            background-position: center;
+            background-repeat: no-repeat;
+            
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+        }
+        
+        .section-title {
+            position: relative;
+            z-index: 2;
+            color: #fff;
+            font-size: 1.4rem;
+            font-weight: 700;
+            padding: 0.8rem 0 0;
+            text-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+        }
+        
+        /* ===== Karusel konteyner ===== */
+        .book-carousel-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: calc(100% - 50px);
+            z-index: 2;
+            padding: 0 30px;
+            bottom: 20px;
+        }
+        
+        .book-carousel {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        
+        .book-card {
+            position: absolute;
+            width: 180px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 8px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.5s ease;
+            z-index: 1;
+            cursor: pointer;
+            transform: scale(0.8);
+            opacity: 0.6;
+        }
+        
+        .book-card.active {
+            transform: scale(1);
+            opacity: 1;
+            z-index: 3;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        .book-card:hover {
+            transform: scale(1.03);
+        }
+        
+        .book-cover {
+            height: 200px;
+            border-radius: 8px 8px 0 0;
+            overflow: hidden;
+            background: linear-gradient(135deg, #8e9eab, #eef2f3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .book-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .book-info {
+            padding: 0.6rem;
+            text-align: center;
+        }
+        
+        .book-title {
+            font-size: 0.85rem;
+            color: #2c3e50;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+            line-height: 1.2;
+            height: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .book-author {
+            font-size: 0.75rem;
+            color: #7f8c8d;
+            margin-bottom: 0.4rem;
+            font-weight: 600;
+            height: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .book-rating {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #f39c12;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 0.2rem;
+        }
+        
+        .book-year {
+            font-size: 0.7rem;
+            color: #95a5a6;
+            font-weight: 500;
+        }
+        
+        /* ===== Tugmalar ===== */
+        .carousel-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 26, 83, 0.8);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            color: white;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 5;
+        }
+        
+        .carousel-button:hover {
+            background: #003cff;
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .carousel-button.prev {
+            left: 5px;
+        }
+        
+        .carousel-button.next {
+            right: 5px;
+        }
+        
+        /* ===== Kitoblar ro'yxati ===== */
+        .book-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
+            margin-top: 25px;
+            padding: 15px;
+        }
+        
+        .list-book-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            padding: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-align: center;
+        }
+        
+        .list-book-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .list-book-title {
+            font-weight: bold;
+            margin-bottom: 3px;
+            font-size: 0.85rem;
+        }
+        
+        .list-book-author {
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+        
+        /* ===== Footer ===== */
+        footer {
+            text-align: center;
+            margin-top: 25px;
+            padding: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .date-info {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+        
+        /* Progress indikator */
+        .carousel-progress {
+            display: flex;
+            justify-content: center;
+            margin-top: 8px;
+            gap: 6px;
+        }
+        
+        .progress-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .progress-dot.active {
+            background: white;
+            transform: scale(1.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Online Kutubxona</h1>
+            <p class="subtitle">Kitoblar ro'yxati</p>
+        </header>
+        
+        <!-- Reklama bannerlari -->
+        <div class="ad-container">
+            <div class="ad-banner">📚 Yangi Kitoblar Sizni Kutmoqda!</div>
+            <div class="ad-banner">🎉 Ajoyib Chegirmalar - 50% gacha</div>
+        </div>
+        
+        <section class="featured-books">
+            <h2 class="section-title">Ommabop kitoblar</h2>
+
+            <!-- Carousel konteyner -->
+            <div class="book-carousel-container">
+                <button class="carousel-button prev" id="prevButton" aria-label="Oldingi kitob">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+
+                <div class="book-carousel" id="featuredBooks">
+                    <!-- Kitoblar JavaScript orqali qo'shiladi -->
+                </div>
+
+                <button class="carousel-button next" id="nextButton" aria-label="Keyingi kitob">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            
+            <!-- Progress indikator -->
+            <div class="carousel-progress" id="progressIndicator">
+                <!-- JavaScript orqali qo'shiladi -->
+            </div>
+        </section>
+        
+        <div class="book-list">
+            <!-- Kitoblar ro'yxati JavaScript orqali qo'shiladi -->
+        </div>
+        
+        <footer>
+            <p class="date-info">2025 | 31.10.2025</p>
+        </footer>
+    </div>
+
+    <script>
+        // Kitoblar ma'lumotlari
+        const books = [
+            {
+                id: 1,
+                title: "O'tkan kunlar",
+                author: "Abdulla Qodiriy",
+                rating: 4.8,
+                year: 1926,
+                image: "images/books/sample-cover-1.jpg"
+            },
+            {
+                id: 2,
+                title: "Kecha va kunduz",
+                author: "Cho'lpon",
+                rating: 4.6,
+                year: 1935,
+                image: "images/books/sample-cover-2.jpg"
+            },
+            {
+                id: 3,
+                title: "Ulug'bek xazinasi",
+                author: "Odil Yoqubov",
+                rating: 4.9,
+                year: 1974,
+                image: "images/books/sample-cover-3.jpg"
+            },
+            {
+                id: 4,
+                title: "Sariq devni minib",
+                author: "Xudoyberdi To'xtaboyev",
+                rating: 4.5,
+                year: 1971,
+                image: "images/books/sample-cover-4.jpg"
+            },
+            {
+                id: 5,
+                title: "Dunyoning ishlari",
+                author: "O'tkir Hoshimov",
+                rating: 4.7,
+                year: 1990,
+                image: "images/books/sample-cover-5.jpg"
+            }
+        ];
+
+        // DOM elementlari
+        const carousel = document.getElementById('featuredBooks');
+        const bookList = document.querySelector('.book-list');
+        const prevButton = document.getElementById('prevButton');
+        const nextButton = document.getElementById('nextButton');
+        const progressIndicator = document.getElementById('progressIndicator');
+        
+        let currentIndex = 0;
+        let autoSlideInterval;
+
+        // Progress indikatorni yaratish
+        function renderProgressIndicator() {
+            progressIndicator.innerHTML = '';
+            
+            books.forEach((_, index) => {
+                const dot = document.createElement('div');
+                dot.className = `progress-dot ${index === currentIndex ? 'active' : ''}`;
+                dot.addEventListener('click', () => {
+                    stopAutoSlide();
+                    currentIndex = index;
+                    renderCarousel();
+                    renderProgressIndicator();
+                    startAutoSlide();
+                });
+                progressIndicator.appendChild(dot);
+            });
+        }
+
+        // Karuselga kitob qo'shish
+        function renderCarousel() {
+            carousel.innerHTML = '';
+            
+            books.forEach((book, index) => {
+                const bookCard = document.createElement('div');
+                bookCard.className = `book-card ${index === currentIndex ? 'active' : ''}`;
+                bookCard.style.transform = `translateX(${(index - currentIndex) * 200}px)`;
+                
+                bookCard.innerHTML = `
+                    <div class="book-cover">
+                        <img src="${book.image}" alt="${book.title}" onerror="this.style.display='none'; this.parentNode.innerHTML='<span style=\'color:#2c3e50; font-weight:bold; font-size:0.8rem\'>${book.title}</span>'">
+                    </div>
+                    <div class="book-info">
+                        <h3 class="book-title">${book.title}</h3>
+                        <p class="book-author">${book.author}</p>
+                        <div class="book-rating">
+                            <i class="fas fa-star"></i><span class="rating-value">${book.rating}</span>
+                        </div>
+                        <div class="book-year">${book.year} yil</div>
+                    </div>
+                `;
+                
+                // Kitobni ochish
+                bookCard.addEventListener('click', () => {
+                    openBook(book.id);
+                });
+                
+                carousel.appendChild(bookCard);
+            });
+        }
+
+        // Kitoblar ro'yxatini yaratish
+        function renderBookList() {
+            bookList.innerHTML = '';
+            
+            books.forEach(book => {
+                const listItem = document.createElement('div');
+                listItem.className = 'list-book-item';
+                
+                listItem.innerHTML = `
+                    <div class="list-book-title">${book.title}</div>
+                    <div class="list-book-author">${book.author}</div>
+                `;
+                
+                listItem.addEventListener('click', () => {
+                    openBook(book.id);
+                });
+                
+                bookList.appendChild(listItem);
+            });
+        }
+
+        // Kitobni ochish (simulyatsiya)
+        function openBook(bookId) {
+            const book = books.find(b => b.id === bookId);
+            alert(`"${book.title}" kitobini o'qish uchun ochish!\n\nMuallif: ${book.author}\nReyting: ${book.rating}\nYil: ${book.year}`);
+        }
+
+        // Keyingi kitobga o'tish
+        function nextBook() {
+            currentIndex = (currentIndex + 1) % books.length;
+            renderCarousel();
+            renderProgressIndicator();
+        }
+
+        // Oldingi kitobga o'tish
+        function prevBook() {
+            currentIndex = (currentIndex - 1 + books.length) % books.length;
+            renderCarousel();
+            renderProgressIndicator();
+        }
+
+        // Avtomatik karusel
+        function startAutoSlide() {
+            autoSlideInterval = setInterval(nextBook, 3500);
+        }
+
+        // Avtomatik karuselni to'xtatish
+        function stopAutoSlide() {
+            clearInterval(autoSlideInterval);
+        }
+
+        // Dasturni ishga tushirish
+        function init() {
+            renderCarousel();
+            renderBookList();
+            renderProgressIndicator();
+            startAutoSlide();
+            
+            // Tugmalarni bog'lash
+            prevButton.addEventListener('click', () => {
+                stopAutoSlide();
+                prevBook();
+                startAutoSlide();
+            });
+            
+            nextButton.addEventListener('click', () => {
+                stopAutoSlide();
+                nextBook();
+                startAutoSlide();
+            });
+            
+            // Karusel ustiga sichqoncha olib borilganda avtomatik aylanishni to'xtatish
+            carousel.addEventListener('mouseenter', stopAutoSlide);
+            carousel.addEventListener('mouseleave', startAutoSlide);
+        }
+
+        // Sahifa yuklanganda dasturni ishga tushirish
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+
+
+
+
+    </section>
+
+    <!-- Browse by Subject -->
+    <section class="browse-subjects">
+      <div class="container">
+        <h2>Mavzu Bo'yicha Ko'rish</h2>
+        <div class="subjects-grid">
+          <a href="#" class="subject-card">
+            <i class="fas fa-palette"></i>
+            <span class="subject-name">San'at</span>
+            <span class="book-count">125,083 Kitob</span>
+          </a>
+          <a href="#" class="subject-card">
+            <i class="fas fa-rocket"></i>
+            <span class="subject-name">Ilmiy Fantastika</span>
+            <span class="book-count">20,817 Kitob</span>
+          </a>
+          <a href="#" class="subject-card">
+            <i class="fas fa-magic"></i>
+            <span class="subject-name">Fantastika</span>
+            <span class="book-count">14,028 Kitob</span>
+          </a>
+          <a href="#" class="subject-card">
+            <i class="fas fa-user"></i>
+            <span class="subject-name">Tarjimai hollar</span>
+            <span class="book-count">26,230 Kitob</span>
+          </a>
+          <a href="#" class="subject-card">
+            <i class="fas fa-utensils"></i>
+            <span class="subject-name">Retseptlar</span>
+            <span class="book-count">9,552 Kitob</span>
+          </a>
+          <a href="#" class="subject-card">
+            <i class="fas fa-heart"></i>
+            <span class="subject-name">Romantika</span>
+            <span class="book-count">21,140 Kitob</span>
+          </a>
+          <a href="#" class="subject-card">
+            <i class="fas fa-graduation-cap"></i>
+            <span class="subject-name">Darsliklar</span>
+            <span class="book-count">38,186 Kitob</span>
+          </a>
+          <a href="#" class="subject-card">
+            <i class="fas fa-child"></i>
+            <span class="subject-name">Bolalar</span>
+            <span class="book-count">58,051 Kitob</span>
+          </a>
+          <a href="#" class="subject-card">
+            <i class="fas fa-history"></i>
+            <span class="subject-name">Tarix</span>
+            <span class="book-count">2,381,321 Kitob</span>
+          </a>
+          <a href="#" class="subject-card">
+            <i class="fas fa-stethoscope"></i>
+            <span class="subject-name">Tibbiyot</span>
+            <span class="book-count">58,604 Kitob</span>
+          </a>
+          <a href="#" class="subject-card">
+            <i class="fas fa-mosque"></i>
+            <span class="subject-name">Din</span>
+            <span class="book-count">160,448 Kitob</span>
+          </a>
+          <a href="#" class="subject-card">
+            <i class="fas fa-search"></i>
+            <span class="subject-name">Jinoyat va Detektiv</span>
+            <span class="book-count">16,536 Kitob</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Library Stats -->
+    <section class="library-stats">
+      <div class="container">
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-number">161,770</div>
+            <div class="stat-label">Yangi A'zolar</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">2,561</div>
+            <div class="stat-label">Yaratilgan Ro'yxatlar</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">278,412</div>
+            <div class="stat-label">Kitoblar soni</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section">
+      <div class="container">
+        <h2>Loyiha Haqida</h2>
+        <p>Online Kutubxona - bu ochiq, tahrirlanadigan kutubxona katalogi, nashr etilgan har bir kitob uchun veb sahifa qurishga intiladi.</p>
+        <p>Wikipedia kabi, siz ham katalogga yangi ma'lumotlar yoki tuzatishlar qo'shishingiz mumkin. Siz mavzular, mualliflar yoki a'zolar yaratgan ro'yxatlar bo'yicha ko'rishingiz mumkin. Agar siz kitoblarni sevsangiz, nima uchun kutubxona qurishga yordam bermaysiz?</p>
+      </div>
+    </section>
+  </main>
+      
+      <div class="chat-input-container">
+        <div class="chat-input-wrapper">
+          <input type="text" class="chat-input" id="chatInput" placeholder="Xabar yozing...">
+          <button class="chat-send" id="chatSend">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div id="siteFooter"></div>
+
+  <script src="main.js"></script>
+  <script src="shared.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      if(window.__shared_inject) window.__shared_inject();
+    });
+  </script>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
+
+  <script>
+  // Firebase konfiguratsiyasi
+  const firebaseConfig = {
+    apiKey: "AIzaSyDICLwZdvBwXEqam4i3CHdz7lq4hPjx_g8",
+    authDomain: "onlinelibrary-2025.firebaseapp.com",
+    projectId: "onlinelibrary-2025",
+    storageBucket: "onlinelibrary-2025.firebasestorage.app",
+    messagingSenderId: "994522635573",
+    appId: "1:994522635573:web:64c304a2a0d7a6d849007c",
+    databaseURL: "https://onlinelibrary-2025-default-rtdb.firebaseio.com/"
+  };
+
+  // Firebase ni ishga tushirish
+  firebase.initializeApp(firebaseConfig);
+  const database = firebase.database();
+
+  // Modern Real-time Notification System
+  document.addEventListener('DOMContentLoaded', function() {
+    const notificationBell = document.getElementById('notificationBell');
+    const notificationDropdown = document.getElementById('notificationDropdown');
+    const notificationBadge = document.getElementById('notificationBadge');
+    const markAllReadBtn = document.getElementById('markAllRead');
+    const notificationList = document.getElementById('notificationList');
+
+    // Toggle notification dropdown
+    notificationBell.addEventListener('click', function(e) {
+      e.stopPropagation();
+      notificationDropdown.classList.toggle('show');
+      
+      // Add ring animation to bell
+      const bellIcon = notificationBell.querySelector('.bell-icon');
+      bellIcon.style.animation = 'ring 0.6s ease';
+      setTimeout(() => {
+        bellIcon.style.animation = '';
+      }, 600);
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!notificationBell.contains(e.target)) {
+        notificationDropdown.classList.remove('show');
+      }
+    });
+
+    // Mark all as read
+    markAllReadBtn.addEventListener('click', function() {
+      const unreadItems = notificationList.querySelectorAll('.notification-item.unread');
+      unreadItems.forEach(item => {
+        item.classList.remove('unread');
+      });
+      
+      // Update badge count
+      notificationBadge.textContent = '0';
+      notificationBadge.style.display = 'none';
+      
+      // Show success message
+      showNotification('Barcha bildirishnomalar o\'qilgan deb belgilandi', 'success');
+    });
+
+    // Mark individual notification as read
+    notificationList.addEventListener('click', function(e) {
+      const notificationItem = e.target.closest('.notification-item');
+      if (notificationItem && notificationItem.classList.contains('unread')) {
+        notificationItem.classList.remove('unread');
+        
+        // Update badge count
+        const unreadCount = notificationList.querySelectorAll('.notification-item.unread').length;
+        if (unreadCount === 0) {
+          notificationBadge.textContent = '0';
+          notificationBadge.style.display = 'none';
+        } else {
+          notificationBadge.textContent = unreadCount;
+        }
+      }
+    });
+
+    // Real-time notifications
+    setupRealTimeNotifications();
+
+    // Auto-update notification count
+    function updateNotificationCount() {
+      const unreadCount = notificationList.querySelectorAll('.notification-item.unread').length;
+      if (unreadCount > 0) {
+        notificationBadge.textContent = unreadCount;
+        notificationBadge.style.display = 'flex';
+      } else {
+        notificationBadge.style.display = 'none';
+      }
+    }
+
+    // Initialize notification count
+    updateNotificationCount();
+  });
+
+  // Real-time notifications setup
+  function setupRealTimeNotifications() {
+    const userData = JSON.parse(localStorage.getItem('user') || '{}');
+    if (!userData.uid) return;
+
+    // Listen for new messages
+    const messagesRef = database.ref('messages');
+    messagesRef.on('child_added', (snapshot) => {
+      const messages = snapshot.val();
+      if (messages) {
+        Object.keys(messages).forEach(messageId => {
+          const message = messages[messageId];
+          if (message.senderId !== userData.uid) {
+            // Check if this is a new message for current user
+            const chatId = snapshot.key;
+            const userIds = chatId.split('_');
+            if (userIds.includes(userData.uid)) {
+              showRealTimeNotification(message);
+            }
+          }
+        });
+      }
+    });
+
+    // Listen for new users joining
+    const usersRef = database.ref('users');
+    usersRef.on('child_added', (snapshot) => {
+      const user = snapshot.val();
+      if (user.uid !== userData.uid && user.status === 'online') {
+        showRealTimeNotification({
+          type: 'user_joined',
+          userName: user.name,
+          text: `${user.name} tizimga qo'shildi`
+        });
+      }
+    });
+  }
+
+  // Show real-time notification
+  function showRealTimeNotification(data) {
+    const notificationList = document.getElementById('notificationList');
+    const notificationBadge = document.getElementById('notificationBadge');
+    
+    // Create new notification item
+    const notificationItem = document.createElement('div');
+    notificationItem.className = 'notification-item unread';
+    
+    const icon = data.type === 'user_joined' ? '👋' : '💬';
+    const text = data.type === 'user_joined' ? data.text : `${data.senderName}: ${data.text}`;
+    
+    notificationItem.innerHTML = `
+      <div class="notification-icon">${icon}</div>
+      <div class="notification-content">
+        <div class="notification-text">${text}</div>
+        <div class="notification-time">Hozir</div>
+      </div>
+      <div class="notification-status"></div>
+    `;
+    
+    // Add to top of list
+    notificationList.insertBefore(notificationItem, notificationList.firstChild);
+    
+    // Update badge count
+    const unreadCount = notificationList.querySelectorAll('.notification-item.unread').length;
+    notificationBadge.textContent = unreadCount;
+    notificationBadge.style.display = 'flex';
+    
+    // Show browser notification if permission granted
+    if (Notification.permission === 'granted') {
+      new Notification('Online Library', {
+        body: text,
+        icon: '/favicon.ico'
+      });
+    }
+    
+    // Auto-remove after 5 seconds if not clicked
+    setTimeout(() => {
+      if (notificationItem.parentNode) {
+        notificationItem.remove();
+        updateNotificationCount();
+      }
+    }, 5000);
+  }
+
+  // Request notification permission
+  if (Notification.permission === 'default') {
+    Notification.requestPermission();
+  }
+
+  // Show notification toast
+  function showNotification(message, type = 'info') {
+    const toast = document.createElement('div');
+    toast.className = `notification-toast ${type}`;
+    toast.textContent = message;
+    
+    const colors = {
+      success: '#10b981',
+      error: '#ef4444',
+      info: '#3b82f6',
+      warning: '#f59e0b'
+    };
+
+    toast.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 12px 20px;
+      border-radius: 8px;
+      color: white;
+      font-weight: 500;
+      z-index: 10000;
+      background: ${colors[type] || colors.info};
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      animation: slideInRight 0.3s ease-out;
+    `;
+
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+      toast.style.animation = 'slideOutRight 0.3s ease-in';
+      setTimeout(() => {
+        if (toast.parentNode) {
+          toast.parentNode.removeChild(toast);
+        }
+      }, 300);
+    }, 3000);
+  }
+</script>
+</body>
+</html>
